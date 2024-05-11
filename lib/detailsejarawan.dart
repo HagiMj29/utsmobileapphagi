@@ -84,7 +84,7 @@ class DetailListSejarawan extends StatelessWidget {
                   ),
                   SizedBox(width: 2,),
                   Text(
-                    data?.sex == "male" ? "Laki-laki" : "Perempuan",
+                    data?.sex == Sex.MALE ? "Laki-laki" : "Perempuan",
                     style: GoogleFonts.inriaSans(
                       fontWeight: FontWeight.bold,
                     ),

@@ -33,6 +33,7 @@ class _ListSejarawanState extends State<ListSejarawan> {
       final data = modelSejarawanFromJson(response.body);
       setState(() {
         sejarawanList = data.result;
+
       });
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -46,26 +47,30 @@ class _ListSejarawanState extends State<ListSejarawan> {
         Uri.parse('${AppConfig.baseUrl}/sejarawan/$id'),
       );
       if (response.statusCode == 200) {
-        print('sejarawan deleted successfully');
+        print('Sejarawan deleted successfully');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Data Berhasil di hapus'),
+          content: Text('Data Berhasil dihapus'),
           backgroundColor: Colors.green,
         ));
         fetchSejarawan();
-        setState(() {
-          sejarawanList.removeWhere((sejarawan) => sejarawan.id == id);
-        });
+        // Memuat ulang daftar sejarawan setelah penghapusan berhasil
+        fetchSejarawan();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Data gagal di hapus'),
+          content: Text('Data gagal dihapus'),
           backgroundColor: Colors.red,
         ));
         print('Failed to delete sejarawan: ${response.body}');
       }
     } catch (e) {
       print('Error deleting sejarawan: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Terjadi kesalahan saat menghapus data'),
+        backgroundColor: Colors.red,
+      ));
     }
   }
+
 
   void searchSejarawan(String query) {
     List<Result> searchSejarawan = sejarawanList
@@ -90,7 +95,6 @@ class _ListSejarawanState extends State<ListSejarawan> {
           IconButton(
             onPressed: () {
               sejarawanList.clear();
-              fetchSejarawan();
             },
             icon: Icon(Icons.refresh),
           ),

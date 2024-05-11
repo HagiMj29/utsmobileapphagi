@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final modelSejarawan = modelSejarawanFromJson(jsonString);
+
 import 'dart:convert';
 
 ModelSejarawan modelSejarawanFromJson(String str) => ModelSejarawan.fromJson(json.decode(str));
@@ -29,7 +33,7 @@ class Result {
   String name;
   String birthdate;
   String origin;
-  String sex;
+  Sex sex;
   String description;
   String image;
 
@@ -48,7 +52,7 @@ class Result {
     name: json["name"],
     birthdate: json["birthdate"],
     origin: json["origin"],
-    sex: json["sex"],
+    sex: sexValues.map[json["sex"]]!,
     description: json["description"],
     image: json["image"],
   );
@@ -58,8 +62,30 @@ class Result {
     "name": name,
     "birthdate": birthdate,
     "origin": origin,
-    "sex": sex,
+    "sex": sexValues.reverse[sex],
     "description": description,
     "image": image,
   };
+}
+
+enum Sex {
+  MALE,
+  FEMALE,
+}
+
+final sexValues = EnumValues({
+  "male": Sex.MALE,
+  "female": Sex.FEMALE,
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

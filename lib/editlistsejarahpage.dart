@@ -85,7 +85,7 @@ class _UpdateSejarawanState extends State<UpdateSejarawan> {
         imageBytes,
       );
 
-      if (response.containsKey('sejarawan')) {
+      if (response.containsKey('id')) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Update successful for List Sejarawan'),
@@ -118,11 +118,12 @@ class _UpdateSejarawanState extends State<UpdateSejarawan> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add data Sejarawan", style: GoogleFonts.inriaSans(
+        title: Text("Edit data Sejarawan", style: GoogleFonts.inriaSans(
             fontWeight: FontWeight.bold
         ),),
       ),

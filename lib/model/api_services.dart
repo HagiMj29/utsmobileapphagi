@@ -93,18 +93,18 @@ class ApiServices {
       final responseBody = await response.stream.bytesToString();
       return json.decode(responseBody);
     } else {
-      throw Exception('Failed to add Sejarawan Data: ${response.reasonPhrase}');
+      throw Exception('Failed to add Sejarawan Data: ${response.toString()}');
     }
   }
 
 
-  Future<Map<String, dynamic>> updateSejarawan(int sejarawanid, String name, String birthdate, String origin, String sex, String description, Uint8List? image) async {
-    final Uri uri = Uri.parse('$baseUrl/sejarawan/$sejarawanid');
+  Future<Map<String, dynamic>> updateSejarawan(int id, String name, String birthdate, String origin, String sex, String description, Uint8List? image) async {
+    final Uri uri = Uri.parse('$baseUrl/sejarawans/$id/update');
 
     // Buat request multipart
-    var request = http.MultipartRequest('PUT', uri);
+    var request = http.MultipartRequest('POST', uri);
 
-    // Tambahkan field data
+    // Tambahkan data
     request.fields.addAll({
       'name': name,
       'birthdate': birthdate,
@@ -113,7 +113,7 @@ class ApiServices {
       'description': description,
     });
 
-    // Tambahkan file gambar jika tersedia
+    // Tambahkan gambar jika ada
     if (image != null) {
       request.files.add(
         http.MultipartFile(
@@ -125,20 +125,18 @@ class ApiServices {
       );
     }
 
-    // Kirim request dengan header yang sesuai
+    // Kirim request
     var response = await request.send();
 
-    // Baca respons
-    final responseBody = await response.stream.bytesToString();
-
-    // Cek status kode respons
+    // Handle response
     if (response.statusCode == 200) {
-      print('Data berhasil diperbarui');
+      final responseBody = await response.stream.bytesToString();
       return json.decode(responseBody);
     } else {
-      throw Exception('Failed to update Sejarawan Data: ${responseBody}');
+      throw Exception('Failed to update Sejarawan Data: ${response.reasonPhrase}');
     }
   }
+
 
 
 
